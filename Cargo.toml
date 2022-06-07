@@ -1,0 +1,12 @@
+[package]
+name = "planet_sim"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+macroquad = "0.3.16"
+libm = "0.2.2"
+uint = "0.9.3"
+evalexpr = "7.2.0"
