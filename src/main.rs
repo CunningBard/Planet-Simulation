@@ -18,7 +18,7 @@ fn substring(str: String, start: i32, end: i32) ->  Option<String>
 
 const AU: i128 = 149600000000;
 const G: f64 = 0.000000000066744;
-const SCALE: f64 = (25000000000 / AU) as f64;  // 1AU = 100 pixels
+const SCALE: f64 = 0.00000000167112299;  // 1AU = 100 pixels
 const TIMESTEP: i128 = 3600 * 24; // 1 day
 const WIDTH: i32 = 700;
 const HEIGHT: i32 = 700;
@@ -157,11 +157,11 @@ async fn main() {
         }
         // println!("{:?}", now.elapsed());
         for planet in &mut planets {
-            let res = planet.draw();
-            draw_circle(res.0, res.1 ,res.2 ,res.3);
             for dot in &planet.orbit {
                 draw_circle(dot[0], dot[1], 1f32, Color::from_rgba(255, 255, 255, 255))
             }
+            let res = planet.draw();
+            draw_circle(res.0, res.1 ,res.2 ,res.3);
         }
         next_frame().await;
     }
