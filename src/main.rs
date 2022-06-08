@@ -152,6 +152,9 @@ async fn main() {
     planets.push(earth);
 
     loop {
+        if is_key_pressed(KeyCode::Escape){
+            break
+        }
         let i_hate_my_self = planets.clone();
         // let now = std::time::SystemTime::now();
         for planet in &mut planets {
