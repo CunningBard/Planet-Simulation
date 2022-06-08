@@ -5,17 +5,6 @@ use macroquad::prelude::*;
 use macroquad::time;
 use crate::miniquad::conf::Icon;
 
-fn substring(str: String, start: i32, end: i32) ->  Option<String>
-{
-    if end <= start
-    {
-        return None;
-    }
-    let ss = (&str[(start as usize)..(end as usize)]).to_string();
-    Option::from(ss)
-
-}
-
 const AU: i128 = 149600000000;
 const G: f64 = 0.000000000066744;
 const SCALE: f64 = 0.00000000167112299;  // 1AU = 100 pixels
