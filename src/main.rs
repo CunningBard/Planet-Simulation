@@ -151,9 +151,11 @@ async fn main() {
 
     loop {
         let i_hate_my_self = planets.clone();
+        let now = std::time::SystemTime::now();
         for planet in &mut planets {
             planet.update_position(&i_hate_my_self);
         }
+        println!("{:?}", now.elapsed());
         for planet in &mut planets {
             let res = planet.draw();
             draw_circle(res.0, res.1 ,res.2 ,res.3);
