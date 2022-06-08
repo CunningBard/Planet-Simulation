@@ -2,6 +2,7 @@ use std::i128;
 use evalexpr::*;
 use libm::{atan2, cos, sin, sqrt};
 use macroquad::prelude::*;
+use macroquad::time;
 use crate::miniquad::conf::Icon;
 
 fn substring(str: String, start: i32, end: i32) ->  Option<String>
@@ -33,7 +34,7 @@ struct Planet
     color: Vec<u8>,
     x_velocity: i128,
     y_velocity: i128,
-    orbit: Vec<Vec<i32>>
+    orbit: Vec<Vec<f32>>
 }
 // def attraction(self, other):
 // 		other_x, other_y = other.x, other.y
@@ -94,7 +95,7 @@ impl Planet
         //     pygame.draw.lines(win, self.color, False, updated_points, 2)
         //
         // pygame.draw.circle(win, self.color, (x, y), self.radius)
-    pub fn draw(&self) -> (f32, f32, f32, Color){
+    pub fn draw(&mut self) -> (f32, f32, f32, Color){
             let x = (eval(&format!(" 0.00000000167112299 * {}", self.x)).unwrap().to_string().parse::<f64>().unwrap() as i128 + WIDTH  as i128 / 2) as f32;
             let y = (eval(&format!(" 0.00000000167112299 * {}", self.y)).unwrap().to_string().parse::<f64>().unwrap() as i128 + WIDTH  as i128 / 2) as f32;
             let r = self.radius as f32;
@@ -103,6 +104,7 @@ impl Planet
                             self.color[1],
                             self.color[2], 255);
 
+            self.orbit.push(vec![x, y]);
             return (x,y, r,c);
         }
 
@@ -138,13 +140,13 @@ fn window_conf() -> Conf {
 
 #[macroquad::main(window_conf())]
 async fn main() {
+    let now = time::get_fps();
     let mut planets = vec![];
     // sun = Planet(0, 0, 30, YELLOW, 1988920000000000000000000000000)
     let mut sun = Planet::planet(0, 0, 198892 * 10_i128.pow(24), 30, vec![255, 255, 0], 1);
-    sun.y_velocity = -123123000;
     planets.push(sun);
     let mut earth = Planet::planet(-1 * AU, 0, 59722 * 10_i128.pow(18), 16, vec![90, 25, 55], 2);
-    earth.y_velocity = 507830000;
+    earth.y_velocity = 807830000;
     planets.push(earth);
 
     loop {
@@ -152,9 +154,12 @@ async fn main() {
         for planet in &mut planets {
             planet.update_position(&i_hate_my_self);
         }
-        for planet in &planets {
+        for planet in &mut planets {
             let res = planet.draw();
-            draw_circle(res.0, res.1 ,res.2 ,res.3)
+            draw_circle(res.0, res.1 ,res.2 ,res.3);
+            for dot in &planet.orbit {
+                draw_circle(dot[0], dot[1], 1f32, Color::from_rgba(255, 255, 255, 255))
+            }
         }
         next_frame().await;
     }
