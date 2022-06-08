@@ -104,7 +104,9 @@ impl Planet
                             self.color[1],
                             self.color[2], 255);
 
-            self.orbit.push(vec![x, y]);
+            if !self.orbit.contains(&vec![x, y]){
+                self.orbit.push(vec![x, y]);
+            }
             return (x,y, r,c);
         }
 
